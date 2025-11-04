@@ -32,17 +32,25 @@ class DecisionTree():
     def _create_Tree(self, X, Y, depth=0):
         num_Samples = len(Y)
         
-        # Check stopping conditions (Pre-Pruning)
-        if num_Samples >= self.min_Samples and depth < self.max_Depth:
-            best_Feature = self._get_best_Feature(X, Y)
-            children = []
-            # Check gain or gini!
-            for (Xi, Yi) in best_Feature["feature_values"]:
-                # TODO: Recursively create child nodes
-                pass
+        if num_Samples < self.min_Samples or depth >= self.max_Depth or len(np.unique(Y)) == 1:
+            return Node(value=self._calculate_Value(Y))
+
+        best_Feature = self._get_best_Feature(X, Y)
+
+        children = []
+        for value in best_Feature.feature_values:
+            mask = X[best_Feature.feature] == value
+            subset_X = X[mask].drop(columns=[best_Feature.feature])
+            subset_Y = Y[mask]
             
-        # TODO: Create leaf node with predicted value
-        return Node()
+            if(len(subset_Y) == 0):
+                continue
+            else:
+                new_child = self._create_Tree(subset_X, subset_Y, depth + 1)
+            children.append(new_child)
+
+        best_Feature.children = children
+        return best_Feature
 
     def _get_best_Feature(self, X, Y):
         best_feature_name = None
