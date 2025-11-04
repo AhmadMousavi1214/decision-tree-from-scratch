@@ -45,16 +45,31 @@ class DecisionTree():
         return Node()
 
     def _get_best_Feature(self, X, Y):
-        if self.mode == "gain":
-           # TODO: Calculate information gain for each feature
-           pass
-
-        elif self.mode == "gini":
-           # TODO: Calculate gini split for each feature
-           pass
+        best_feature_name = None
         
-        # TODO: Select and return best feature as Node
-        pass
+        if self.mode == "gain":
+            max_info_gain = -np.inf
+            
+            for feature in X.columns:
+                feature_info_gain = self._information_Gain(X[feature], X, Y)
+                
+                if feature_info_gain > max_info_gain :
+                    best_feature_name = feature
+                    max_info_gain = feature_info_gain
+                
+        elif self.mode == "gini":
+           min_gini = np.inf
+           
+           for feature in X.columns:
+               feature_gini = self._gini_Split(X[feature], X, Y)
+               
+               if feature_gini < min_gini:
+                   best_feature_name = feature
+                   min_gini = feature_gini
+        
+        feature_values = X[best_feature_name].unique().tolist()
+           
+        return Node(feature=best_feature_name, feature_values=feature_values)
         
     def _information_Gain(self, feature, X, Y):
         
