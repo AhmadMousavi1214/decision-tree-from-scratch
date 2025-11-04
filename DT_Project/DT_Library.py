@@ -82,15 +82,24 @@ class DecisionTree():
     def _gini_Split(self, feature, X, Y):
         
         def gini(y):
-           # TODO: Calculate gini impurity for target variable
-           pass
+            classes, counts = np.unique(y, return_counts=True)
+            total_count = len(y)
+            classes_count = len(classes)
+            gini = 0
+            for i in range(classes_count):
+                gini += (counts[i]/total_count)**2
+            return 1 - gini
 
+        X_count = len(X)
+        total_gini = 0
         for value in feature.unique():
-            # TODO: Calculate weighted gini for each value
-            pass
+            mask = feature == value
+            subset_X = X[mask]
+            subset_Y = Y[mask]
+            p_value = len(subset_X)/X_count
+            total_gini += p_value*gini(subset_Y)
 
-        # TODO: Return gini split value
-        pass
+        return total_gini
 
     def _calculate_Value(self, Y):
         # Where is it used and what does it do?
