@@ -59,15 +59,25 @@ class DecisionTree():
     def _information_Gain(self, feature, X, Y):
         
         def entropy(y):
-           # TODO: Calculate entropy for target variable
-           pass
-      
-        for value in feature.unique():
-            # TODO: Calculate weighted entropy for each value
-            pass
+            classes ,counts = np.unique(y, return_counts=True)
+            total_count = len(y)
+            classes_count = len(classes)
+            entropy  =0
+            for i in range(classes_count):
+                predict = counts[i] / total_count
+                entropy -= predict*np.log2(predict)
+            return entropy
         
-        # TODO: Return information gain
-        pass
+        X_count = len(X)
+        total_entropy = 0
+        for value in feature.unique():
+            mask = feature == value
+            subset_X = X[mask]
+            subset_Y = Y[mask]
+            p_value = len(subset_X)/X_count
+            total_entropy += p_value*entropy(subset_Y)
+        
+        return entropy(Y) -total_entropy 
     
     def _gini_Split(self, feature, X, Y):
         
