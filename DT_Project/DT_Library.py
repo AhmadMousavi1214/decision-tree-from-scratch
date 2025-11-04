@@ -125,16 +125,26 @@ class DecisionTree():
         return total_gini
 
     def _calculate_Value(self, Y):
-        # Where is it used and what does it do?
         return max(set(Y), key=list(Y).count)
 
     def fit(self, X_Train, Y_Train):
         self.root = self._create_Tree(X_Train, Y_Train)
 
     def predict(self, X):
+        
         def _move_Tree(sample, root):
-            # TODO: If leaf node return pred value, Or find recursively leaf node
-            pass
 
-        # TODO: Apply _move_Tree to each sample in X
-        pass
+            if root.value is not None:
+                return root.value
+            
+            value = sample[root.feature]
+            index = root.feature_values.index(value)
+            return _move_Tree(sample, root.children[index])
+        
+        predictions = []
+        
+        for _, row in X.iterrows():
+            predict = _move_Tree(row, self.root)
+            predictions.append(predict)
+            
+        return np.array(predictions)
