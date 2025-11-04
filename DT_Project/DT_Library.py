@@ -15,15 +15,19 @@ class Node():
         self.value = value
 
 class DecisionTree():
-    def __init__(self,
-                 mode="gain or gini?",
-                 max_Depth=float("inf"),
-                 min_Samples=2,
-                 pruning_threshold="What is diffrent when change mode?", 
-                 TODO="Any desired hyperparameters"):
-       # You can change all class properties for better performance!
-       # TODO: Initialize tree hyperparameters and root node
-       pass
+    def __init__(
+        self,
+        root = None,
+        mode="gain",
+        max_Depth=float("inf"),
+        min_Samples=2,
+        pruning_threshold=None,
+    ):
+       self.root = root
+       self.mode = mode
+       self.max_Depth = max_Depth
+       self.min_Samples = min_Samples
+       self.pruning_threshold = pruning_threshold
 
     def _create_Tree(self, X, Y, depth=0):
         num_Samples = len(Y)
