@@ -2,9 +2,17 @@ import pandas as pd
 import numpy as np
 
 class Node():
-    def __init__(self, feature=None, children=None, TODO="Other information about that node you wana show and need."):
-        # TODO: Initialize node attributes
-        pass
+    def __init__(
+        self,
+        feature=None,
+        children=None,
+        feature_values=None,
+        value=None
+    ):
+        self.feature = feature
+        self.children = children
+        self.feature_values = feature_values
+        self.value = value
 
 class DecisionTree():
     def __init__(self,
